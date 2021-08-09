@@ -4,5 +4,5 @@ from .views import *
 app_name = 'djancommerce'
 
 urlpatterns = [
-    
+
 ]

@@ -6,7 +6,7 @@ import uuid
 class Category(models.Model):
     name = models.CharField(max_length=50)
     slug = models.SlugField(max_length=50)
-    cover = models.ImageField(upload_to='category/', null=True, blank=True)
+    cover = models.ImageField(upload_to='category/')
 
     def __str__(self):
         return self.name

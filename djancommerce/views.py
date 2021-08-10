@@ -8,8 +8,9 @@ from django.http.response import HttpResponse
 
 def product_detail(request, product_id):
     product = Product.objects.get(id=product_id)
+    user_cart = Cart.objects.get(user=request.user)
     form = CartItemForm()
-    context = {'product': product, 'form': form}
+    context = {'product': product, 'form': form, 'cart': user_cart}
     return render(request, 'product_detail.html', context)
 
 
@@ -21,7 +22,7 @@ def cart_add(request, product_id):
         user_cart = Cart.objects.get(user=request.user)
         try:
             item = Cartitem.objects.filter(cart=user_cart).get(name=product.name)
-        except:
+        except Cartitem.DoesNotExist:
             new_item = form.save(commit=False)
             new_item.name = product.name
             new_item.price = product.price

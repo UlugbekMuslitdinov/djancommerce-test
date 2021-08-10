@@ -11,9 +11,9 @@ class CartItemInline(admin.TabularInline):
 
 
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ['name', 'slug']
+    list_display = ['name', 'slug', ]
     prepopulated_fields = {'slug': ("name",)}
-    inlines = [ProductInline,]
+    inlines = [ProductInline, ]
 
 
 class ProductAdmin(admin.ModelAdmin):
@@ -26,8 +26,9 @@ class CartItemAdmin(admin.ModelAdmin):
 
 
 class CartAdmin(admin.ModelAdmin):
-    list_display = ['user', 'id']
-    inlines = [CartItemInline,]
+    list_display = ['user', 'id', ]
+    inlines = [CartItemInline, ]
+
 
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Product, ProductAdmin)

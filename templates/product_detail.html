@@ -6,7 +6,7 @@
 </head>
 <body>
     {{ product.name }}
-
+    {{ cart.total_price }}
 <form method="post" action="{% url 'djancommerce:cart_add' product.id %}">
     {% csrf_token %}
     {{ form.as_p }}

@@ -27,12 +27,17 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
+
 class Cart(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='cart')
 
     def __str__(self):
         return f'{self.user}'
+
+    def total_price(self):
+        return sum(item.price * item.quantity for item in self.cartitem_set.all())
+
 
 class Cartitem(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)

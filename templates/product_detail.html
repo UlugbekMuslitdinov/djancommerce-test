@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    {{ product.name }}
+    {{ cart.total_price }}
+<form method="post" action="{% url 'djancommerce:cart_add' product.id %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button name="submit">Submit</button>
+</form>
+</body>
+</html>

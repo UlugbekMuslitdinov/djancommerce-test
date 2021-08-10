@@ -27,12 +27,19 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
+
 class Cart(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='cart')
+
+    def __str__(self):
+        return f'{self.user}'
+
+    def total_price(self):
+        return sum(item.price * item.quantity for item in self.cartitem_set.all())
 
 
-class CartItem(models.Model):
+class Cartitem(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=100)
     price = models.FloatField()
@@ -42,3 +49,22 @@ class CartItem(models.Model):
 
     def __str__(self):
         return f'{self.name} + {self.id}'
+
+
+class Order(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    payment_method = models.CharField(max_length=50)
+    delivery_method = models.CharField(max_length=50)
+    status = models.CharField(max_length=50)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.user
+
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    name = models.CharField(max_length=50)
+    cover = models.ImageField(upload_to='product/')
+    price = models.FloatField()

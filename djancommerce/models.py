@@ -46,6 +46,7 @@ class Cartitem(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
     cover = models.ImageField(upload_to='product/')
+    prod_id = models.CharField(max_length=50, null=True)
 
     def __str__(self):
         return f'{self.name} + {self.id}'

@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 import uuid
+from django.conf import settings
 
 
 class Category(models.Model):
@@ -61,13 +62,13 @@ class Cartitem(models.Model):
 class Order(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    payment_method = models.CharField(max_length=50)
-    delivery_method = models.CharField(max_length=50)
-    status = models.CharField(max_length=50)
+    payment_method = models.CharField(max_length=50, choices=settings.PAYMENT_METHODS)
+    delivery_method = models.CharField(max_length=50, choices=settings.DELIVERY_METHODS)
+    status = models.CharField(max_length=50, choices=settings.DELIVERY_STATUSES, default='To be confirmed')
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.user
+        return self.user.username
 
 
 class OrderItem(models.Model):
@@ -75,3 +76,4 @@ class OrderItem(models.Model):
     name = models.CharField(max_length=50)
     cover = models.ImageField(upload_to='product/')
     price = models.FloatField()
+    quantity = models.PositiveIntegerField()

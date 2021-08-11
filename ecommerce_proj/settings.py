@@ -130,3 +130,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+DELIVERY_METHODS = [('self', 'self'), ('alibaba delivery', 'alibaba delivery')]
+PAYMENT_METHODS = [('paypal', 'paypal'), ('click', 'click'), ('payme', 'payme')]
+DELIVERY_STATUSES = [('Received', 'Received'), ('On the way', 'On the way'), ('delivered', 'delivered')]

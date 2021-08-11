@@ -1,9 +1,6 @@
-from .forms import CartItemForm
-from .models import Cart, Product, Cartitem
+from .forms import CartItemForm, OrderForm
+from .models import Cart, Product, Cartitem, Order, OrderItem
 from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
-from django.contrib.auth.decorators import login_required
-from django.http.response import HttpResponse
 
 
 def product_detail(request, product_id):
@@ -58,3 +55,27 @@ def item_delete(request, item_id):
     item = Cartitem.objects.get(id=item_id)
     item.delete()
     return redirect('djancommerce:cart')
+
+
+def create_order(request):
+    user_cart = Cart.objects.get(user=request.user)
+    cart_items_list = Cartitem.objects.filter(cart=user_cart)
+    if request.method != 'POST':
+        form = OrderForm()
+    else:
+        form = OrderForm(data=request.POST)
+        if form.is_valid():
+            new_order = form.save(commit=False)
+            new_order.user = request.user
+            new_order.status = str('To be confirmed')
+            new_order.save()
+            for item in cart_items_list:
+                item_quantity = item.quantity
+                item_cover = item.cover
+                item_name = item.name
+                item_price = item.price
+                OrderItem(order=new_order, name=item_name, cover=item_cover, price=item_price, quantity=item_quantity).save()
+                item.delete()
+            return redirect('djancommerce:cart')
+    context = {'cart_items': cart_items_list, 'form': form}
+    return render(request, 'order.html', context)

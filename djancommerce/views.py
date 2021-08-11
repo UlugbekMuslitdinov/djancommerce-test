@@ -52,3 +52,9 @@ def item_update(request, item_id):
     item.quantity = new_num.quantity
     item.save()
     return redirect('djancommerce:cart')
+
+
+def item_delete(request, item_id):
+    item = Cartitem.objects.get(id=item_id)
+    item.delete()
+    return redirect('djancommerce:cart')

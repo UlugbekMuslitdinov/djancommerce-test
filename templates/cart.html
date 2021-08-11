@@ -6,6 +6,8 @@
 </head>
 <body>
     {{ cart.total_price }}
+    {{ cart.total_items_by_quantity }}
+    {{ cart.total_items_by_product_type }}
 <hr>
 {% for item in cart_items %}
     {{ item.name }}
@@ -17,6 +19,11 @@
     {{ form.as_p }}
     <button name="submit">Update</button>
     </form>
+
+<form method="post" action="{% url 'djancommerce:item_delete' item.id %}">
+{% csrf_token %}
+    <button name="submit">Delete</button>
+</form>
     <br>
 {% endfor %}
 </body>

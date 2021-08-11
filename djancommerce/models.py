@@ -35,6 +35,12 @@ class Cart(models.Model):
     def __str__(self):
         return f'{self.user}'
 
+    def total_items_by_quantity(self):
+        return sum(item.quantity for item in self.cartitem_set.all())
+
+    def total_items_by_product_type(self):
+         return len(self.cartitem_set.all())
+
     def total_price(self):
         return sum(item.price * item.quantity for item in self.cartitem_set.all())
 
